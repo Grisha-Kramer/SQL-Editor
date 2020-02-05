@@ -51,6 +51,69 @@ function start() {
     });
 }
 
+function addNew() {
+    inquirer
+      .prompt({
+        name: "addWhat",
+        type: "list",
+        choices: ["Department", "Role", "Employee"]
+      })
+      .then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.addWhat === "Department") {
+          addNew();
+        } else if (answer.addWhat === "Role") {
+          update();
+        } else if (answer.addWhat === "Employee") {
+          view();
+        } else {
+          connection.end();
+        }
+      });
+}
+
+function update() {
+  inquirer
+    .prompt({
+      name: "upWhat",
+      type: "list",
+      choices: ["Department", "Role", "Employee"]
+    })
+    .then(function(answer) {
+      // based on their answer, either call the bid or the post functions
+      if (answer.upWhat === "Department") {
+        upDep();
+      } else if (answer.upWhat === "Role") {
+        upRole();
+      } else if (answer.upWhat === "Employee") {
+        upEmp();
+      } else {
+        connection.end();
+      }
+    });
+}
+
+
+function del() {
+  inquirer
+    .prompt({
+      name: "delWhat",
+      type: "list",
+      choices: ["Department", "Role", "Employee"]
+    })
+    .then(function(answer) {
+      // based on their answer, either call the bid or the post functions
+      if (answer.delWhat === "Department") {
+        delDep();
+      } else if (answer.delWhat === "Role") {
+        delRole();
+      } else if (answer.delWhat === "Employee") {
+        delEmp();
+      } else {
+        connection.end();
+      }
+    });
+}
 
 
 
