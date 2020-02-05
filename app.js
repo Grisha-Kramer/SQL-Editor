@@ -61,11 +61,11 @@ function addNew() {
       .then(function(answer) {
         // based on their answer, either call the bid or the post functions
         if (answer.addWhat === "Department") {
-          addNew();
+          addDep();
         } else if (answer.addWhat === "Role") {
-          update();
+          addRole();
         } else if (answer.addWhat === "Employee") {
-          view();
+          addEmp();
         } else {
           connection.end();
         }
@@ -94,6 +94,27 @@ function update() {
 }
 
 
+function view() {
+  inquirer
+    .prompt({
+      name: "delWhat",
+      type: "list",
+      choices: ["Department", "Role", "Employee"]
+    })
+    .then(function(answer) {
+      // based on their answer, either call the bid or the post functions
+      if (answer.viewWhat === "Department") {
+        viewDep();
+      } else if (answer.viewWhat === "Role") {
+        viewRole();
+      } else if (answer.viewWhat === "Employee") {
+        viewEmp();
+      } else {
+        connection.end();
+      }
+    });
+}
+
 function del() {
   inquirer
     .prompt({
@@ -112,6 +133,93 @@ function del() {
       } else {
         connection.end();
       }
+    });
+}
+
+
+function addDep() { 
+    inquirer.prompt({
+        name: addDPT,
+        type: "input",
+        message: "Department name?"
+    })
+    .then(function(answer) {
+        connection.query(
+          "INSERT INTO departments SET ?",
+          {
+            department: answer
+          },
+          function(err) {
+            if (err) throw err;
+            console.log("Department Updated");
+            start();
+          }
+        );
+    })
+
+}
+
+function addRole() {
+  inquirer
+    .prompt({
+      name: addROLE,
+      type: "input",
+      message: "Role name?"
+    })
+    .then(function(answer) {
+      connection.query(
+        "INSERT INTO roles SET ?",
+        {
+          department: answer
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Role Updated");
+          start();
+        }
+      );
+    });
+}
+
+function addEmp() {
+  inquirer
+    .prompt([
+    {
+      name: "fname",
+      type: "input",
+      message: "Employee first name?"
+    },
+    {
+    name: "lname",
+    type: "input",
+    message: "Employee last name?"
+    },
+    {
+        name: "role",
+        type: "input",
+        message: "Employee role ID#?"
+    },
+    {
+        name: "salary",
+        type: "input",
+        message: "Input"
+    }
+
+    ])
+    .then(function(answer) {
+      connection.query(
+        "INSERT INTO employees SET ?",
+        {
+          First_name: answer.fname,
+          Last_name: answer.lname,
+          Role_id: answer.role
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Role Updated");
+          start();
+        }
+      );
     });
 }
 
