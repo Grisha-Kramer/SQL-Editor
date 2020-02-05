@@ -97,7 +97,7 @@ function update() {
 function view() {
   inquirer
     .prompt({
-      name: "delWhat",
+      name: "viewWhat",
       type: "list",
       choices: ["Department", "Role", "Employee"]
     })
@@ -139,7 +139,7 @@ function del() {
 
 function addDep() { 
     inquirer.prompt({
-        name: addDPT,
+        name: "addDPT",
         type: "input",
         message: "Department name?"
     })
