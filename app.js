@@ -48,7 +48,7 @@ function start() {
       } else if (answer.task === "View roles") {
         viewRole();
       } else if (answer.task === "Update employee roles") {
-        viewRole();
+        upRole();
       }
 
       else {
@@ -89,16 +89,31 @@ function addDep() {
 
 function addRole() {
   inquirer
-    .prompt({
-      name: addROLE,
+    .prompt([
+      
+      {
+        name: "addTITLE",
+        type: "input",
+        message: "Input title"
+      },
+      {
+      name: "addSALARY",
       type: "input",
-      message: "Role name?"
-    })
+      message: "Input salary"
+      },
+      {
+      name: "addID",
+      type: "input",
+      message: "Input correct department ID"
+      }
+    ])
     .then(function(answer) {
       connection.query(
         "INSERT INTO roles SET ?",
         {
-          department: answer.addROLE
+          Title: answer.addTITLE,
+          Salary: answer.addSALARY,
+          Department_id: answer.addID
         },
         function(err) {
           if (err) throw err;
@@ -127,12 +142,7 @@ function addEmp() {
         type: "input",
         message: "Employee role ID#?"
     },
-    {
-        name: "salary",
-        type: "input",
-        message: "Input Salary"
-    }
-
+    
     ])
     .then(function(answer) {
       connection.query(
@@ -141,7 +151,6 @@ function addEmp() {
           First_name: answer.fname,
           Last_name: answer.lname,
           Role_id: answer.role,
-          Salary: answer.salary
         },
         function(err) {
           if (err) throw err;
@@ -167,17 +176,6 @@ function upDep() {
 
 }
 
-function viewEmp() {
-  var sqlStr = "SELECT first_name, last_name, title, salary FROM employee ";
-  sqlStr += "LEFT JOIN role ";
-  sqlStr += "ON employee.role_id = role.id";
-  connection.query(sqlStr, function(err, result) {
-    if (err) throw err;
-
-    console.table(result);
-    runSearch();
-  });
-}
 
 function viewDep() {
   var sqlStr = "SELECT * from department";
@@ -185,37 +183,25 @@ function viewDep() {
     if (err) throw err;
 
     console.table(result);
-    runSearch();
   });
 }
 
+
 function viewRole() {
-  var sqlStr = "SELECT * from role";
+  var sqlStr = "SELECT * from roles";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
     console.table(result);
-    runSearch();
-  });
-}
-
-function viewRole() {
-  var sqlStr = "SELECT * from role";
-  connection.query(sqlStr, function(err, result) {
-    if (err) throw err;
-
-    console.table(result);
-    runSearch();
   });
 }
 
 function viewEmp() {
-  var sqlStr = "SELECT * from role";
+  var sqlStr = "SELECT * from employees";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
     console.table(result);
-    runSearch();
   });
 }
 
