@@ -1,8 +1,8 @@
-const inquirier = require("inquirer");
+var inquirer = require("inquirer");
 const cTable = require("console.table");
 const mysql = require("mysql")
 
-var PORT = process.env.PORT || 8080;
+
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
 
   // Your password
   password: "Grishinka7",
-  database: "top_songsDB"
+  database: "EmployeeDB"
 });
 
 connection.connect(function(err) {
@@ -57,47 +57,23 @@ function start() {
     });
 }
 
-function addNew() {
-    inquirer
-      .prompt({
-        name: "addWhat",
-        type: "list",
-        choices: ["Department", "Role", "Employee"]
-      })
-      .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
-        if (answer.addWhat === "Department") {
-          addDep();
-        } else if (answer.addWhat === "Role") {
-          addRole();
-        } else if (answer.addWhat === "Employee") {
-          addEmp();
-        } else {
-          connection.end();
-        }
-      });
-}
 
 
 
 function addDep() { 
-    inquirer.prompt([
-      {
+    inquirer.prompt({
+      
         name: "addDPT",
         type: "input",
         message: "Department name?"
-    },
-      {
-        name: "addDPTID",
-        type: "input",
-        message: "Department ID?"
-      }
-    ])
+    
+    })
     .then(function(answer) {
         connection.query(
           "INSERT INTO departments SET ?",
           {
-            department_name: answer.addDPT
+            department_name: answer.addDPT,
+      
           },
           function(err) {
             if (err) throw err;
@@ -106,19 +82,7 @@ function addDep() {
           }
         );
     })
-    .then(function(answer) {
-      connection.query(
-        "INSERT INTO departments SET ?",
-        {
-        department_id: answer.addDPTID
-        },
-        function(err) {
-            if (err) throw err;
-            console.log("Department ID Updated");
-            start();
-          }
-      )
-    })
+    
 }  
 
 
@@ -134,7 +98,7 @@ function addRole() {
       connection.query(
         "INSERT INTO roles SET ?",
         {
-          department: answer
+          department: answer.addROLE
         },
         function(err) {
           if (err) throw err;
@@ -166,7 +130,7 @@ function addEmp() {
     {
         name: "salary",
         type: "input",
-        message: "Input"
+        message: "Input Salary"
     }
 
     ])
@@ -176,7 +140,8 @@ function addEmp() {
         {
           First_name: answer.fname,
           Last_name: answer.lname,
-          Role_id: answer.role
+          Role_id: answer.role,
+          Salary: answer.salary
         },
         function(err) {
           if (err) throw err;
@@ -300,7 +265,3 @@ function delWho(delwho) {
 }
 
 
-
-app.listen(PORT, function() {
-  console.log("Server listening on: http://localhost:" + PORT);
-});
