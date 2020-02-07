@@ -31,7 +31,7 @@ function start() {
       name: "task",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employee roles"]
+      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employee roles", "Quit"]
     })
     .then(function(answer) {
       // based on their answer, either call the bid or the post functions
@@ -49,12 +49,17 @@ function start() {
         viewRole();
       } else if (answer.task === "Update employee roles") {
         upRole();
+      } else if (answer.task === "Quit") {
+        quit();
       }
-
       else {
         connection.end();
       }
     });
+}
+
+function quit() {
+  connection.end()
 }
 
 
@@ -78,7 +83,7 @@ function addDep() {
           function(err) {
             if (err) throw err;
             console.log("Department Updated");
-          
+          start()
           }
         );
     })
@@ -183,6 +188,7 @@ function viewDep() {
     if (err) throw err;
 
     console.table(result);
+    start();
   });
 }
 
@@ -193,6 +199,7 @@ function viewRole() {
     if (err) throw err;
 
     console.table(result);
+    start();
   });
 }
 
@@ -202,6 +209,7 @@ function viewEmp() {
     if (err) throw err;
 
     console.table(result);
+    start();
   });
 }
 
