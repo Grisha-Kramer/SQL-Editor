@@ -31,20 +31,26 @@ function start() {
       name: "task",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add new", "Update", "View", "Delete"]
+      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employee roles"]
     })
     .then(function(answer) {
       // based on their answer, either call the bid or the post functions
-      if (answer.task === "Add new") {
-        addNew();
-      } else if (answer.task === "Update") {
-        update();  
-      } else if (answer.task === "View") {
-        view();
-      } else if (answer.task === "Delete") {
-        del();
+      if (answer.task === "Add new employee") {
+        addEmp();
+      } else if (answer.task === "Add new department") {
+        addDep();  
+      } else if (answer.task === "Add new role") {
+        addRole();
+      } else if (answer.task === "View employees") {
+        viewEmp();
+      } else if (answer.task === "View departments") {
+        viewDep();
+      } else if (answer.task === "View roles") {
+        viewRole();
+      } else if (answer.task === "Update employee roles") {
+        viewRole();
       }
-      
+
       else {
         connection.end();
       }
@@ -72,69 +78,6 @@ function addNew() {
       });
 }
 
-function update() {
-  inquirer
-    .prompt({
-      name: "upWhat",
-      type: "list",
-      choices: ["Department", "Role", "Employee"]
-    })
-    .then(function(answer) {
-      // based on their answer, either call the bid or the post functions
-      if (answer.upWhat === "Department") {
-        upDep();
-      } else if (answer.upWhat === "Role") {
-        upRole();
-      } else if (answer.upWhat === "Employee") {
-        upEmp();
-      } else {
-        connection.end();
-      }
-    });
-}
-
-
-function view() {
-  inquirer
-    .prompt({
-      name: "viewWhat",
-      type: "list",
-      choices: ["Department", "Role", "Employee"]
-    })
-    .then(function(answer) {
-      // based on their answer, either call the bid or the post functions
-      if (answer.viewWhat === "Department") {
-        viewDep();
-      } else if (answer.viewWhat === "Role") {
-        viewRole();
-      } else if (answer.viewWhat === "Employee") {
-        viewEmp();
-      } else {
-        connection.end();
-      }
-    });
-}
-
-function del() {
-  inquirer
-    .prompt({
-      name: "delWhat",
-      type: "list",
-      choices: ["Department", "Role", "Employee"]
-    })
-    .then(function(answer) {
-      // based on their answer, either call the bid or the post functions
-      if (answer.delWhat === "Department") {
-        delDep();
-      } else if (answer.delWhat === "Role") {
-        delRole();
-      } else if (answer.delWhat === "Employee") {
-        delEmp();
-      } else {
-        connection.end();
-      }
-    });
-}
 
 
 function addDep() { 
@@ -309,6 +252,51 @@ function viewEmp() {
     console.table(result);
     runSearch();
   });
+}
+
+function delEmp() {
+  console.log("Deleting an employee");
+
+  var query = `SELECT *
+      FROM employee`;
+
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+
+    const delwho = res.map(({ id, First_name, Last_name }) => ({
+      value: id,
+      name: `${id} ${First_name} ${Last_name}`
+    }));
+
+    console.table(res);
+    console.log("ArrayToDelete!\n");
+
+    delWho(delwho);
+  });
+}
+
+function delWho(delwho) {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "empId",
+        message: "Which employee do you want to remove?",
+        choices: delwho
+      }
+    ])
+    .then(function(answer) {
+      var query = `DELETE FROM employee WHERE ?`;
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(query, { id: answer.empId }, function(err, res) {
+        if (err) throw err;
+
+        console.table(res);
+        console.log(res.affectedRows + "Deleted!\n");
+
+        start();
+      });
+    });
 }
 
 
