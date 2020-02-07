@@ -6,14 +6,15 @@ USE EmployeeDB;
 
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT,
-  Department name VARCHAR(30) NULL
+  Department_name VARCHAR(30) NULL
 );
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
   Title VARCHAR(30) NULL,
   Salary DECIMAL(10,2) NULL,
-  Department_id INT NULL
+  Department_id INT NULL,
+  PRIMARY KEY (id)
   
 );
 
@@ -22,7 +23,8 @@ CREATE TABLE employee (
   First_name VARCHAR(30) NULL,
   Last_name DECIMAL(10,2) NULL,
   Role_id INT NULL,
-  manager_id INT NULL
+  manager_id INT NULL,
+  PRIMARY KEY (id)
 );
 
 INSERT INTO departments (Department)
