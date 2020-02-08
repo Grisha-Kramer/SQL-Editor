@@ -23,7 +23,7 @@ connection.connect(function(err) {
   // run the start function after the connection is made to prompt the user
   start();
 });
-
+//Menu to 
 
 function start() {
   inquirer
@@ -31,7 +31,7 @@ function start() {
       name: "task",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employee roles", "Quit"]
+      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employees", "Update roles", "Update departments", "Delete employees", "Quit"]
     })
     .then(function(answer) {
       // based on their answer, either call the bid or the post functions
@@ -47,24 +47,31 @@ function start() {
         viewDep();
       } else if (answer.task === "View roles") {
         viewRole();
-      } else if (answer.task === "Update employee roles") {
+      } else if (answer.task === "Update employees") {
+        upEmp();
+      } else if (answer.task === "Update roles") {
         upRole();
-      } else if (answer.task === "Quit") {
+      } else if (answer.task === "Update departments") {
+        upDep();
+      } else if (answer.task === "Delete Employees") {
+        delEmp();
+      }
+       else if (answer.task === "Quit") {
         quit();
       }
-      else {
-        connection.end();
-      }
+      // else {
+      //   connection.end();
+      // }
     });
 }
-
+//Quit function
 function quit() {
   connection.end()
 }
 
 
 
-
+ // Add functions to insert sql
 function addDep() { 
     inquirer.prompt({
       
@@ -168,22 +175,11 @@ function addEmp() {
 
 
 
-function upDep() {
-  inquirer
-  .prompt({
-    name: upDPT,
-    type: "input",
-    message: "Which department would you like to update?"
-  }
 
-
-  )
-
-}
-
+// View functions using console.table
 
 function viewDep() {
-  var sqlStr = "SELECT * from department";
+  var sqlStr = "SELECT * from departments";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
@@ -213,11 +209,27 @@ function viewEmp() {
   });
 }
 
+// Update code
+function upEmp() {
+
+}
+
+
+function upRole() {
+
+
+}
+
+function upDep() {
+
+
+}
+
 function delEmp() {
   console.log("Deleting an employee");
 
   var query = `SELECT *
-      FROM employee`;
+      FROM employees`;
 
   connection.query(query, function(err, res) {
     if (err) throw err;
@@ -253,7 +265,7 @@ function delWho(delwho) {
         console.table(res);
         console.log(res.affectedRows + "Deleted!\n");
 
-        start();
+        // start();
       });
     });
 }
