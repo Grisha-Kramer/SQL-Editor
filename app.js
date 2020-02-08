@@ -154,7 +154,11 @@ function addEmp() {
         type: "input",
         message: "Employee role ID#?"
     },
-    
+    {
+        name: "MGMT",
+        type: "input",
+        
+    }
     ])
     .then(function(answer) {
       connection.query(
@@ -166,7 +170,7 @@ function addEmp() {
         },
         function(err) {
           if (err) throw err;
-          console.log("Role Updated");
+          console.log("Employee Updated");
           start();
         }
       );
@@ -211,7 +215,43 @@ function viewEmp() {
 
 // Update code
 function upEmp() {
+  var sqlStr = "SELECT * from employees";
+  sqlStr += "LEFT JOIN roles ";
+  sqlStr += "ON employees.role_id = role.id";
+  connection.query(sqlStr, function(err, result) {
+    if (err) throw err;
 
+    console.table(result);
+   upEmp2()
+  });
+}
+function upEmp2() {
+  inquirer
+  .prompt([
+    {
+    name: "updateId",
+    type: "input",
+    message: "Input the ID"
+    },
+    {
+      name: "updateRole",
+      type: "input",
+      message: "Input updated role"
+    }
+])
+.then(function(answer) {
+  connection.query(
+    "UPDATE roles SET ? WHERE ?",
+    [
+      {
+        Title: answer.updateRole
+      },
+      {
+        Role_id: answer.updateId
+      }
+    ]
+  )
+})
 }
 
 
@@ -265,7 +305,7 @@ function delWho(delwho) {
         console.table(res);
         console.log(res.affectedRows + "Deleted!\n");
 
-        // start();
+        start();
       });
     });
 }

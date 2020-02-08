@@ -15,6 +15,7 @@ CREATE TABLE roles (
   Title VARCHAR(30) NULL,
   Salary DECIMAL(10,2) NULL,
   Department_id INT NULL,
+  Role_id INT NULL,
   PRIMARY KEY (id)
   
 );
@@ -24,22 +25,19 @@ CREATE TABLE employees (
   First_name VARCHAR(40) NULL,
   Last_name VARCHAR(40) NULL,
   Role_id INT NULL,
-  manager_id INT NULL,
+  Manager_id INT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO departments (Department)
-VALUES (DPNT);
+INSERT INTO departments (Department_name)
+VALUES ("Animal Resources");
 
-INSERT INTO roles (Title, Salary, Department_id)
-VALUES ("{title}", 3.25, 75);
+INSERT INTO employees (First_name, Last_name, Salary, Role_id, Manager_id)
+VALUES ("Sven", "Johansenburg", "40000", "3", "80");
 
+INSERT INTO employees (First_name, Last_name, Salary, Role_id, Manager_id)
+VALUES ("Heinrich", "Krautenstein", "50000", "2", "82");
 
-INSERT INTO employee (First_name, Last_name, Role_id)
-VALUES ("{fname}", "{lname}", roleid)
+INSERT INTO employees (First_name, Last_name, Salary, Role_id, Manager_id)
+VALUES ("Sergei", "Russianovich", "43000", "2", "82");
 
-UPDATE roles SET newrole WHERE id = id;
-
-SELECT * WHERE manager_id = mgmt_id
-
-DELETE 
