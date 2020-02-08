@@ -270,49 +270,7 @@ function upDep() {
 
 }
 
-function delEmp() {
-  console.log("Deleting an employee");
 
-  var query = `SELECT *
-      FROM employees`;
 
-  connection.query(query, function(err, res) {
-    if (err) throw err;
-
-    const delwho = res.map(({ id, First_name, Last_name }) => ({
-      value: id,
-      name: `${id} ${First_name} ${Last_name}`
-    }));
-
-    console.table(res);
-    console.log("ArrayToDelete!\n");
-
-    delWho(delwho);
-  });
-}
-
-function delWho(delwho) {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "empId",
-        message: "Which employee do you want to remove?",
-        choices: delwho
-      }
-    ])
-    .then(function(answer) {
-      var query = `DELETE FROM employee WHERE ?`;
-      // when finished prompting, insert a new item into the db with that info
-      connection.query(query, { id: answer.empId }, function(err, res) {
-        if (err) throw err;
-
-        console.table(res);
-        console.log(res.affectedRows + "Deleted!\n");
-
-        start();
-      });
-    });
-}
 
 
