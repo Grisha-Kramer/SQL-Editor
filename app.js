@@ -31,7 +31,7 @@ function start() {
       name: "task",
       type: "list",
       message: "What would you like to do?",
-      choices: ["Add new employee", "Add new department", "Add new role", "View employees", "View roles", "View departments", "Update employees", "Update roles", "Update departments", "Delete employees", "Quit"]
+      choices: ["Add new employee", "Add new department", "Add new role", "View employees & roles", "View roles", "View departments", "Update employees", "Update roles", "Update departments", "Delete employees", "Quit"]
     })
     .then(function(answer) {
       // based on their answer, either call the bid or the post functions
@@ -41,7 +41,7 @@ function start() {
         addDep();  
       } else if (answer.task === "Add new role") {
         addRole();
-      } else if (answer.task === "View employees") {
+      } else if (answer.task === "View employees & roles") {
         viewEmp();
       } else if (answer.task === "View departments") {
         viewDep();
@@ -130,7 +130,7 @@ function addRole() {
         function(err) {
           if (err) throw err;
           console.log("Role Updated");
-          start();
+          addDep()
         }
       );
     });
@@ -157,6 +157,7 @@ function addEmp() {
     {
         name: "MGMT",
         type: "input",
+        message: "Enter Manager ID#"
         
     }
     ])
@@ -167,11 +168,12 @@ function addEmp() {
           First_name: answer.fname,
           Last_name: answer.lname,
           Role_id: answer.role,
+          Manager_id: answer.MGMT
         },
         function(err) {
           if (err) throw err;
           console.log("Employee Updated");
-          start();
+          addRole()
         }
       );
     });
@@ -204,7 +206,9 @@ function viewRole() {
 }
 
 function viewEmp() {
-  var sqlStr = "SELECT * from employees";
+  var sqlStr = "SELECT * from employees ";
+  sqlStr += "LEFT JOIN roles ";
+  sqlStr += "ON employees.role_id = role_id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
@@ -214,24 +218,24 @@ function viewEmp() {
 }
 
 // Update code
-function upEmp() {
-  var sqlStr = "SELECT * from employees";
+function upRole() {
+  var sqlStr = "SELECT * from employees ";
   sqlStr += "LEFT JOIN roles ";
-  sqlStr += "ON employees.role_id = role.id";
+  sqlStr += "ON employees.role_id = role_id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
     console.table(result);
-   upEmp2()
+   upRole2()
   });
 }
-function upEmp2() {
+function upRole2() {
   inquirer
   .prompt([
     {
     name: "updateId",
     type: "input",
-    message: "Input the ID"
+    message: "Input the role ID"
     },
     {
       name: "updateRole",
@@ -247,18 +251,19 @@ function upEmp2() {
         Title: answer.updateRole
       },
       {
-        Role_id: answer.updateId
+        Roles_id: answer.updateId
       }
     ]
   )
 })
+// start()
 }
 
 
-function upRole() {
+// function upRole() {
 
 
-}
+// }
 
 function upDep() {
 
