@@ -202,9 +202,9 @@ function viewRole() {
 }
 
 function viewEmp() {
-  var sqlStr = "SELECT * from employees ";
-  sqlStr += "LEFT JOIN roles ";
-  sqlStr += "ON employees.role_id = role_id";
+  var sqlStr = "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
+  // sqlStr += "LEFT JOIN roles ";
+  // sqlStr += "ON employees.role_id = roles.Roles_id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
@@ -215,9 +215,7 @@ function viewEmp() {
 
 // Update code
 function upRole() {
-  var sqlStr = "SELECT * from employees ";
-  sqlStr += "LEFT JOIN roles ";
-  sqlStr += "ON employees.role_id = role_id";
+  var sqlStr = "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
