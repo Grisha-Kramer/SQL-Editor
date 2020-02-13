@@ -262,4 +262,95 @@ function upRole2() {
 
 // }
 
-function upDep() {}
+function upDep() {
+  var sqlStr =
+    "SELECT employees.*, departments.* FROM employees LEFT JOIN departments ON employees.id = departments.id";
+  // sqlStr += "LEFT JOIN roles ";
+  // sqlStr += "ON employees.role_id = roles.Roles_id";
+  connection.query(sqlStr, function(err, result) {
+    if (err) throw err;
+
+    console.table(result);
+    upDep2();
+  });
+}
+
+function upDep2() {
+  inquirer
+    .prompt([
+      {
+        name: "updateId",
+        type: "input",
+        message: "Input the department ID"
+      },
+      {
+        name: "updateDep",
+        type: "input",
+        message: "Input updated department"
+      }
+    ])
+    .then(function(answer) {
+      connection.query(
+        "UPDATE departments SET ? WHERE ?",
+        [
+          {
+            department_name: answer.updateDep
+          },
+          {
+            id: answer.updateId
+          }
+        ],
+        function(err) {
+          if (err) throw err;
+          console.log("Department Updated");
+          start();
+        }
+      );
+    });
+
+
+function upEmp() {
+  var sqlStr =
+    "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
+  connection.query(sqlStr, function(err, result) {
+    if (err) throw err;
+
+    console.table(result);
+    upRole2();
+  });
+}
+function upRole2() {
+  inquirer
+    .prompt([
+      {
+        name: "updateId",
+        type: "input",
+        message: "Input the Employee ID"
+      },
+      {
+        name: "updateEmp",
+        type: "input",
+        message: "Input updated role"
+      }
+    ])
+    .then(function(answer) {
+      connection.query(
+        "UPDATE roles SET ? WHERE ?",
+        [
+          {
+            Title: answer.updateEmp
+          },
+          {
+            Roles_id: answer.updateId
+          }
+        ],
+        function(err) {
+          if (err) throw err;
+          console.log("Role Updated");
+          start();
+        }
+      );
+    });
+}
+
+}
