@@ -202,7 +202,8 @@ function viewRole() {
 }
 
 function viewEmp() {
-  var sqlStr = "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
+  var sqlStr =
+    "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.id = roles.id";
   // sqlStr += "LEFT JOIN roles ";
   // sqlStr += "ON employees.role_id = roles.Roles_id";
   connection.query(sqlStr, function(err, result) {
@@ -215,7 +216,8 @@ function viewEmp() {
 
 // Update code
 function upRole() {
-  var sqlStr = "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
+  var sqlStr =
+    "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.id = roles.id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
@@ -309,17 +311,20 @@ function upDep2() {
     });
 
 
+
+}
+
 function upEmp() {
   var sqlStr =
-    "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.role_id = roles.Roles_id";
+    "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.id = roles.id";
   connection.query(sqlStr, function(err, result) {
     if (err) throw err;
 
     console.table(result);
-    upRole2();
+    upEmp2();
   });
 }
-function upRole2() {
+function upEmp2() {
   inquirer
     .prompt([
       {
@@ -328,29 +333,122 @@ function upRole2() {
         message: "Input the Employee ID"
       },
       {
-        name: "updateEmp",
+        name: "fname",
         type: "input",
-        message: "Input updated role"
-      }
+        message: "Employee first name?"
+      },
+      {
+        name: "lname",
+        type: "input",
+        message: "Employee last name?"
+      },
+      {
+        name: "role",
+        type: "input",
+        message: "Employee role ID#?"
+      },
+      {
+        name: "MGMT",
+        type: "input",
+        message: "Enter Manager ID#"
+      },
+      
     ])
+    .then(function(answer) {
+      connection.query(
+        "UPDATE employees SET ? WHERE ?",
+        [
+          {
+            First_name: answer.fname,
+            Last_name: answer.lname,
+            Role_id: answer.role,
+            Manager_id: answer.MGMT
+          },
+          {
+            id: answer.updateId
+          }
+        ],
+        
+        function(err) {
+          if (err) throw err;
+          console.log("Employee Updated");
+          upEmp3();
+        }
+      );
+    });
+}    
+    
+function upEmp3() {
+  inquirer
+    .prompt(
+    {
+        name: "upTitle",
+        type: "input",
+        message: "Input updated title"
+      })
     .then(function(answer) {
       connection.query(
         "UPDATE roles SET ? WHERE ?",
         [
           {
-            Title: answer.updateEmp
+            Title: answer.upTitle
           },
           {
-            Roles_id: answer.updateId
+            id: answer.updateId
           }
         ],
         function(err) {
           if (err) throw err;
-          console.log("Role Updated");
+          console.log("Title Updated");
           start();
         }
       );
     });
-}
+  }
 
-}
+  function delEmp() {
+    var sqlStr =
+      "SELECT employees.*, roles.* FROM employees LEFT JOIN roles ON employees.id = roles.id";
+    connection.query(sqlStr, function(err, result) {
+      if (err) throw err;
+
+      console.table(result);
+      delEmp2();
+    });
+  }
+
+  function delEmp2() {
+    inquirer
+      .prompt([
+        {
+          name: "updateId",
+          type: "input",
+          message: "Input the role ID"
+        },
+        {
+          name: "updateRole",
+          type: "input",
+          message: "Input updated role"
+        }
+      ])
+      .then(function(answer) {
+        connection.query(
+          "DELETE roles SET ? WHERE ?",
+          [
+            {
+              Title: answer.updateRole
+            },
+            {
+              Roles_id: answer.updateId
+            }
+          ],
+          function(err) {
+            if (err) throw err;
+            console.log("Role Updated");
+            start();
+          }
+        );
+      });
+
+  }
+  

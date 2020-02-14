@@ -8,4 +8,4 @@ This is an application to handle your new venture capital empire's vast workforc
 When adding an employee it loops through the entire process, otherwise things would get messy fast
 
 
-To build:
+
