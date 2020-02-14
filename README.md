@@ -14,7 +14,7 @@ When adding an employee it loops through the entire process, otherwise things wo
 
 # Images
 These pictures show an employee being added and one of three update functions that can be performed (gifs weren't legible).
-![image](./images/Updating_Role.png)
+![image](../images/Updating_Role.png)
 
 
 # Additions to make:
