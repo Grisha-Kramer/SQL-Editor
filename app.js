@@ -118,6 +118,11 @@ function addRole() {
         name: "addID",
         type: "input",
         message: "Input correct department ID"
+      },
+      {
+        name: "roleID",
+        type: "input",
+        message: "Input correct role ID"
       }
     ])
     .then(function(answer) {
@@ -126,7 +131,8 @@ function addRole() {
         {
           Title: answer.addTITLE,
           Salary: answer.addSALARY,
-          Department_id: answer.addID
+          Department_id: answer.addID,
+          Roles_id: answer.roleID
         },
         function(err) {
           if (err) throw err;
