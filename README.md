@@ -12,6 +12,10 @@ Run the terminal command "node app.js" to run the program.
 # Notes
 When adding an employee it loops through the entire process, otherwise things would get messy fast.
 
+# gifs
+These gifs show an employee being added and one of three update functions that can be performed.
+![](Adding)
+
 
 # Additions to make:
 The delete function still needs a SQL update to work properly
