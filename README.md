@@ -12,9 +12,9 @@ Run the terminal command "node app.js" to run the program.
 # Notes
 When adding an employee it loops through the entire process, otherwise things would get messy fast.
 
-# gifs
-These gifs show an employee being added and one of three update functions that can be performed.
-![](Adding)
+# Images
+These pictures show an employee being added and one of three update functions that can be performed (gifs weren't legible).
+![image](./images/Updating_Role.png)
 
 
 # Additions to make:
