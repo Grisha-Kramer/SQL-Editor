@@ -5,6 +5,10 @@
 
 This is an application to handle your new venture capital empire's vast workforce.  You can add employees, roles and departments and update them.
 
+# Demo
+
+![](SQL.gif)
+
 # Instructions
 Run the terminal command "node app.js" to run the program.
 
