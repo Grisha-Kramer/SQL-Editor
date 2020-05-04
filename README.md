@@ -12,12 +12,15 @@ This is an application to handle your new venture capital empire's vast workforc
 # Instructions
 Run the terminal command "node app.js" to run the program.
 
+# User Story
+
+As an entrepreneur running a unique business, I need to be able to keep track of my employees
+So I can run a profitable business.
+
 
 # Notes
 When adding an employee it loops through the entire process, otherwise things would get messy fast.
 
-# Images
-The images in the images folder show some of the functions (gifs were not legible)
 
 
 # Additions to make:
